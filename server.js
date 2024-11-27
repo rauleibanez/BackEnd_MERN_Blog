@@ -5,6 +5,8 @@ const postRoutes = require('./src/routes/postRoutes');
 const userRoutes = require('./src/routes/userRoutes');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./src/config/swConfig'); // Importar la configuración de Swagger
 
 const app = express();
 
@@ -15,6 +17,9 @@ connectDB();
 
 app.use('/api', postRoutes);
 app.use('/api', userRoutes);
+
+// Ruta de documentación de Swagger 
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 //endpoint por defecto
 app.get('/', (req, res) => { 
