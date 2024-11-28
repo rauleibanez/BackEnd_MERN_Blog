@@ -32,10 +32,28 @@ const createPost = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
-
+/*
 const updatePost = async (req, res) => {
   try {
     const post = await Post.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    res.json(post);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+*/
+
+const updatePost = async (req, res) => {
+   try {
+    const { title, body } = req.body; 
+    const post = await Post.findById(req.params.id); 
+    if (!post) {
+      return res.status(404).json({ message: 'Publicación no encontrada' });
+    } 
+    post.title = title;
+    post.body = body;
+    post.updatedAt = Date.now(); // Actualizar la fecha updatedAt
+    await post.save();
     res.json(post);
   } catch (err) {
     res.status(500).json({ message: err.message });

@@ -1,13 +1,13 @@
 const jwt = require('jsonwebtoken');
 
 const auth = (req, res, next) => {
-  const token = req.header('Authorization')?.split(' ')[1]; // Asume que el token es enviado en el header Authorization: Bearer <token>
+  const token = req.header('Authorization').replace('Bearer ', '');
   if (!token) {
     return res.status(401).json({ message: 'No token, authorization denied' });
   }
 
   try {
-    const decoded = jwt.verify(token, 'your_jwt_secret'); // Usa una clave secreta segura en tu configuración
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded.user;
     next();
   } catch (err) {
@@ -16,3 +16,4 @@ const auth = (req, res, next) => {
 };
 
 module.exports = auth;
+
