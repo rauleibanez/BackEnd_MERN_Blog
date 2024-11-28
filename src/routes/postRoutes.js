@@ -1,5 +1,5 @@
 const express = require('express');
-const { getPosts, createPost, updatePost, deletePost } = require('../controllers/postController');
+const {getPost,  getPosts, createPost, updatePost, deletePost } = require('../controllers/postController');
 const auth = require('../middleware/auth');
 
 const router = express.Router();
@@ -21,6 +21,33 @@ const router = express.Router();
  *                              $ref: '#/components/schemas/Post' 
  */
 router.get('/posts', getPosts);
+
+/**
+ * @swagger
+ * /posts/{id}:
+ *  get:
+ *      summary: Obtener una publicación por ID
+ *      tags: [Posts]
+ *      parameters:
+ *          -in: path
+ *          name: id
+ *          schema:
+ *              type: string
+ *          required: true
+ *          description: ID de la publicación
+ *      responses:
+ *          200:
+ *              description: Publicación obtenida
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/Post'
+ *          404:
+ *              description: Publicación no encontrada
+ *          500:
+ *              description: Error interno del servidor
+ */
+router.get('/posts/:id', getPost);
 
 /** 
  * @swagger 

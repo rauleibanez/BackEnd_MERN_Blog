@@ -10,6 +10,18 @@ const getPosts = async (req, res) => {
   }
 };
 
+const getPost = async (req, res) => { 
+  try { 
+    const post = await Post.findById(req.params.id); 
+    if (!post) { 
+      return res.status(404).json({ message: 'Publicación no encontrada' });
+    } 
+    res.json(post); 
+  } catch (err) { 
+    res.status(500).json({ message: err.message }); 
+  } 
+};
+
 const createPost = async (req, res) => {
   const { title, body } = req.body;
   try {
@@ -41,6 +53,7 @@ const deletePost = async (req, res) => {
 
 module.exports = {
   getPosts,
+  getPost,
   createPost,
   updatePost,
   deletePost
